@@ -47,7 +47,7 @@ public class SignupTC {
         webDriver.close();
     }
 
-    //Happy Pass. TC: user can signup with valid credeintials
+    //Happy Pass. TC: user can sign-up with valid credentials
     //
     @Test
     public void testSignup_1(){
@@ -58,4 +58,81 @@ public class SignupTC {
         webDriver.close();
     }
 
+
+    //TC: user cannot sign-up with only first name
+    //
+    @Test
+    public void testSignup_2(){
+
+        webDriver.get(baseUrl + signup);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
+
+    //TC: user cannot sign-up with all blank fields
+    //
+    @Test
+    public void testSignup_3(){
+
+        webDriver.get(baseUrl + signup);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
+
+    //TC: user cannot sign-up with blank name
+    //
+    @Test
+    public void testSignup_4(){
+
+        webDriver.get(baseUrl + signup);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
+
+    //TC: user cannot sign-up with blank account name
+    //
+    @Test
+    public void testSignup_5(){
+
+        webDriver.get(baseUrl + signup);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
+
+    //TC: user cannot sign-up with blank email
+    //
+    @Test
+    public void testSignup_6(){
+
+        webDriver.get(baseUrl + signup);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
+
+    //TC: user cannot sign-up with blank password
+    //
+    @Test
+    public void testSignup_7(){
+
+        webDriver.get(baseUrl + signup);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
+
+    //TC: user cannot sign-up with short password (min 8 characters)
+    //
+    @Test
+    public void testSignup_8(){
+
+        webDriver.get(baseUrl + signup);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
 }
