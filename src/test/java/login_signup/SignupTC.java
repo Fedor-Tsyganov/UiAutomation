@@ -5,11 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import utils.RandomString;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static constants.Const.*;
+import static utils.RandomEmail.getRandomEmail;
 
 /**
  * Created by Fedor Tsyganov on 1/31/17.
@@ -19,6 +21,7 @@ public class SignupTC {
     private static final String signup = "/signup";
     private String [] names = new String[]{"text", "accountName", "email", "password"};
     private String [] placeholderValues = new String[]{"First and Last Name", "Account Name", "Email", "Password"};
+    private RandomString randomString;
 
     @Before
     public void setUp(){
@@ -50,11 +53,31 @@ public class SignupTC {
     //Happy Pass. TC: user can sign-up with valid credentials
     //
     @Test
-    public void testSignup_1(){
-
+    public void testSignup_1() throws InterruptedException {
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
+        randomString = new RandomString(5);
+        String f_name = "Auto_"+randomString.nextString();
+        String l_name = "Test_"+randomString.nextString();
+        String acc_name = "auto_"+randomString.nextString();
+        String email = getRandomEmail();
+
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(f_name+" "+l_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(acc_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(email);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(defaultPassword);
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Thread.sleep(600);
+
+        Assert.assertEquals("https://qa-portal.clickatelllabs.com/#/login", webDriver.getCurrentUrl()); //user redirected to valid url
+        Assert.assertEquals("",webDriver.findElement(By.xpath("//form/div/input[@name='email']")).getText()); //email is blank
+        Assert.assertEquals("",webDriver.findElement(By.xpath("//form/div/input[@name='password']")).getText()); //password is blank
+        Assert.assertEquals("A confirmation email has been sent to "+email+ " to complete your sign up process",
+                webDriver.findElement(By.xpath("/html/body/div/div/ui-view/div/div/form/div[4]")).getText()); //message is displayed
+
+        //ToDo: chech that sign-up link is not visible
         webDriver.close();
     }
 
