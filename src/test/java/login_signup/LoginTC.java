@@ -20,6 +20,7 @@ public class LoginTC {
     @Before
     public void setUp(){
         System.setProperty(chromeDriver, pathToCD);
+        webDriver = new ChromeDriver();
         webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
@@ -181,7 +182,5 @@ public class LoginTC {
         Thread.sleep(100);
         Assert.assertEquals("https://qa-portal.clickatelllabs.com/#/forgotPasswordEmail", webDriver.getCurrentUrl());
         webDriver.close();
-
-
     }
 }

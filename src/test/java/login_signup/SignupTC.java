@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import utils.RandomString;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class SignupTC {
     @Before
     public void setUp(){
         System.setProperty(chromeDriver, pathToCD);
+        webDriver = new ChromeDriver();
         webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 

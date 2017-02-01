@@ -21,6 +21,7 @@ public class ForgotPassword {
     @Before
     public void setUp() {
         System.setProperty(chromeDriver, pathToCD);
+        webDriver = new ChromeDriver();
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
     }
 
@@ -37,7 +38,6 @@ public class ForgotPassword {
 
     @Test
     public void forgotPassword_1() throws InterruptedException {
-
         webDriver.get(baseUrl + forgotPassword);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("fedor.clickatell+555@gmail.com");
@@ -50,7 +50,6 @@ public class ForgotPassword {
     }
     @Test
     public void forgotPassword_2()throws InterruptedException {
-
         webDriver.get(baseUrl + forgotPassword);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("abc@abracadabra.com");
@@ -64,7 +63,6 @@ public class ForgotPassword {
 
     @Test
     public void forgotPassword_3(){
-
         webDriver.get(baseUrl + forgotPassword);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("abc@?gmail.com");
@@ -78,7 +76,6 @@ public class ForgotPassword {
 
     @Test
     public void forgotPassword_4(){
-
         webDriver.get(baseUrl + forgotPassword);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/button")).click();
