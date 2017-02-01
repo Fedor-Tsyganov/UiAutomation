@@ -163,5 +163,25 @@ public class LoginTC {
         webDriver.close();
     }
 
+    @Test
+    public void testLogin_7()throws InterruptedException {
+        webDriver.get(baseUrl + login);
+        webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+        webDriver.findElement(By.linkText("Sign up now")).click();
+        Thread.sleep(100);
+        Assert.assertEquals("https://qa-portal.clickatelllabs.com/#/signup", webDriver.getCurrentUrl());
+        webDriver.close();
+    }
 
+    @Test
+    public void testLogin_8 ()throws InterruptedException {
+        webDriver.get(baseUrl + login);
+        webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
+        webDriver.findElement(By.linkText("Forgot password?")).click();
+        Thread.sleep(100);
+        Assert.assertEquals("https://qa-portal.clickatelllabs.com/#/forgotPasswordEmail", webDriver.getCurrentUrl());
+        webDriver.close();
+
+
+    }
 }
