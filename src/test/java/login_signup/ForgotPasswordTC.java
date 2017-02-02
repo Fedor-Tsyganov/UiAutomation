@@ -14,7 +14,7 @@ import static constants.Const.*;
 /**
  * Created by aroma on 1/31/2017.
  */
-public class ForgotPassword {
+public class ForgotPasswordTC {
 
     private static final String forgotPassword = "/forgotPasswordEmail";
 
