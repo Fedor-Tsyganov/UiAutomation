@@ -23,6 +23,7 @@ public class SignupTC {
     private String [] names = new String[]{"text", "accountName", "email", "password"};
     private String [] placeholderValues = new String[]{"First and Last Name", "Account Name", "Email", "Password"};
     private RandomString randomString;
+    private String BLANK = "";
 
     @Before
     public void setUp(){
@@ -87,10 +88,26 @@ public class SignupTC {
     //TC: user cannot sign-up with only first name
     //
     @Test
-    public void testSignup_2(){
+    public void testSignup_2() throws InterruptedException{
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        randomString = new RandomString(5);
+        String f_name = "Auto_"+randomString.nextString();
+        String acc_name = "auto_"+randomString.nextString();
+        String email = getRandomEmail();
+
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(f_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(acc_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(email);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(defaultPassword);
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Thread.sleep(600);
+
+        String text = webDriver.switchTo().activeElement().getText();
+        Assert.assertEquals("lastName: may not be empty", text);
 
         webDriver.close();
     }
@@ -102,6 +119,31 @@ public class SignupTC {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='text']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='accountName']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='email']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='password']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
 
         webDriver.close();
     }
@@ -114,16 +156,47 @@ public class SignupTC {
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
+        randomString = new RandomString(5);
+        String acc_name = "auto_"+randomString.nextString();
+        String email = getRandomEmail();
+
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(acc_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(email);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(defaultPassword);
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='text']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
+
         webDriver.close();
     }
 
     //TC: user cannot sign-up with blank account name
     //
     @Test
-    public void testSignup_5(){
+    public void testSignup_5() {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        randomString = new RandomString(5);
+        String f_name = "Auto_"+randomString.nextString();
+        String l_name = "Test_"+randomString.nextString();
+        String email = getRandomEmail();
+
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(f_name+" "+l_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(email);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(defaultPassword);
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='accountName']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
 
         webDriver.close();
     }
@@ -131,10 +204,26 @@ public class SignupTC {
     //TC: user cannot sign-up with blank email
     //
     @Test
-    public void testSignup_6(){
+    public void testSignup_6() {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        randomString = new RandomString(5);
+        String f_name = "Auto_"+randomString.nextString();
+        String l_name = "Test_"+randomString.nextString();
+        String acc_name = "auto_"+randomString.nextString();
+
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(f_name+" "+l_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(acc_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(defaultPassword);
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='email']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
 
         webDriver.close();
     }
@@ -142,21 +231,55 @@ public class SignupTC {
     //TC: user cannot sign-up with blank password
     //
     @Test
-    public void testSignup_7(){
+    public void testSignup_7() {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        randomString = new RandomString(5);
+        String f_name = "Auto_"+randomString.nextString();
+        String l_name = "Test_"+randomString.nextString();
+        String acc_name = "auto_"+randomString.nextString();
+        String email = getRandomEmail();
+
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(f_name+" "+l_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(acc_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(email);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(BLANK);
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Assert.assertEquals(true, (webDriver
+                .findElement(By.xpath("//form/div/input[@name='password']")))
+                .getAttribute("class")
+                .contains("ng-invalid"));
 
         webDriver.close();
     }
 
-    //TC: user cannot sign-up with short password (min 8 characters)
+    //TC: user cannot sign-up with short password (min 8 and max 128 characters)
     //
     @Test
-    public void testSignup_8(){
+    public void testSignup_8() throws InterruptedException {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        randomString = new RandomString(5);
+        String f_name = "Auto_"+randomString.nextString();
+        String l_name = "Test_"+randomString.nextString();
+        String acc_name = "auto_"+randomString.nextString();
+        String email = getRandomEmail();
+
+        webDriver.findElement(By.xpath("//form/div/input[@name='text']")).sendKeys(f_name+" "+l_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='accountName']")).sendKeys(acc_name);
+        webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(email);
+        webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys("123");
+        webDriver.findElement(By.xpath("//form/div/button")).click();
+
+        Thread.sleep(600);
+
+        String text = webDriver.switchTo().activeElement().getText();
+        Assert.assertEquals("password: size must be between 8 and 128", text);
 
         webDriver.close();
     }

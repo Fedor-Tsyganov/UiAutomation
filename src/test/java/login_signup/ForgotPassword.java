@@ -43,19 +43,19 @@ public class ForgotPassword {
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("fedor.clickatell+555@gmail.com");
         webDriver.findElement(By.xpath("//form/div/button")).click();
 
-        Thread.sleep(250);
+        Thread.sleep(500);
         String alert = webDriver.switchTo().activeElement().getText();
         Assert.assertEquals("The reset password link has been successfully sent to your email.", alert);
         webDriver.close();
     }
     @Test
-    public void forgotPassword_2()throws InterruptedException {
+    public void forgotPassword_2() throws InterruptedException {
         webDriver.get(baseUrl + forgotPassword);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("abc@abracadabra.com");
         webDriver.findElement(By.xpath("//form/div/button")).click();
 
-        Thread.sleep(250);
+        Thread.sleep(500);
         String alert = webDriver.switchTo().activeElement().getText();
         Assert.assertEquals("User with email abc@abracadabra.com not found.", alert);
         webDriver.close();
