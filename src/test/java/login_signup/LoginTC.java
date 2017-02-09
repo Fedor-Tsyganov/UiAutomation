@@ -1,33 +1,42 @@
 package login_signup;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+
+import constants.MC2PlatformTest;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
+import utils.TestResultWriter;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static constants.Const.*;
 
-
 public class LoginTC {
 
     private static final String login = "/login";
+    private ArrayList <MC2PlatformTest> testResults = new ArrayList<>();
 
-    @Before
-    public void setUp(){
+    @BeforeTest
+    public void setSystem(){
         System.setProperty(chromeDriver, pathToCD);
+    }
+
+    @BeforeMethod
+    public void setDriver(){
         webDriver = new ChromeDriver();
         webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
-    //Invalid: no pass, no email
     //ToDo: write Test Case about (no pass, no email)
-    @Test
-    public void testLogin_0() throws InterruptedException {
+    @Test(priority=0, description = "link to TC")
+    public void testCannotLoginWithNoPasswordAndNoEmail() throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("");
@@ -53,13 +62,12 @@ public class LoginTC {
         String t2 = productName.get(1);
         Assert.assertEquals("Required", t1);
         Assert.assertEquals("Required", t2);
+
         webDriver.close();
     }
 
-    //Invalid: no pass, any email
-    //PORT-1300
-    @Test
-    public void testLogin_1 () throws InterruptedException {
+    @Test(priority=1, description = "PORT-1300")
+    public void testCannotLoginWithValidEmailAndNoPassword () throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("fedor.clickatell+555@gmail.com");
@@ -73,16 +81,13 @@ public class LoginTC {
         for (WebElement w : allProductsName) {
             productName.add(w.getText());
         }
-        //System.out.println(productName);
         String text = productName.get(0);
         Assert.assertEquals("Required", text);
         webDriver.close();
     }
 
-    //Invalid: no email, pass
-    //PORT-1301
-    @Test
-    public void testLogin_2() throws InterruptedException {
+    @Test(priority=2, description = "PORT-1301")
+    public void testCannotLoginWithNoEmailAndValidPassword() throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("");
@@ -105,10 +110,9 @@ public class LoginTC {
     }
 
 
-    //invalid email and invalid password
     //ToDo: write TC that user cannot login with invalid email and password
-    @Test
-    public void testLogin_3() throws InterruptedException {
+    @Test(priority=3, description = "link to TC")
+    public void testCannotLoginWithInvalidEmailAndInvalidPassword() throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("asdasdAD@asdasdasd");
@@ -120,10 +124,9 @@ public class LoginTC {
         webDriver.close();
     }
 
-    //Invalid: invalid email, valid pass
     //ToDo:  write TC that user cannot login with invalid email and valid password
-    @Test
-    public void testLogin_4() throws InterruptedException {
+    @Test(priority=4, description = "link to TC")
+    public void testCannotLoginWithInvalidEmailAndValidPassword() throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("asdasdAD@asdasdasd");
@@ -135,10 +138,9 @@ public class LoginTC {
         webDriver.close();
     }
 
-    //Invalid: valid email, invalid pass
     //ToDo:  write TC that user cannot login with valid login and invalid password
-    @Test
-    public void testLogin_5() throws InterruptedException {
+    @Test(priority=5, description = "link to TC")
+    public void testLoginWithValidEmailAndInvalidPassword() throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("fedor.clickatell+555@gmail.com");
@@ -150,10 +152,8 @@ public class LoginTC {
         webDriver.close();
     }
 
-    //valid email and password
-    //PORT-1295
-    @Test
-    public void testLogin_6(){
+    @Test(priority=6, description = "PORT-1295")
+    public void testLoginWithValidEmailAndValidPassword(){
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys("fedor.clickatell+555@gmail.com");
@@ -164,8 +164,9 @@ public class LoginTC {
         webDriver.close();
     }
 
-    @Test
-    public void testLogin_7()throws InterruptedException {
+    //ToDo: write TC that link "Sign up now" works
+    @Test(priority=7, description = "link to TC")
+    public void testUserCanClickOnSignupNowLink()throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.linkText("Sign up now")).click();
@@ -174,8 +175,9 @@ public class LoginTC {
         webDriver.close();
     }
 
-    @Test
-    public void testLogin_8 ()throws InterruptedException {
+    //ToDo: write TC that link "Forgot password?" works
+    @Test(priority=8, description = "link to TC")
+    public void testUserCanClickForgotPasswordLink ()throws InterruptedException {
         webDriver.get(baseUrl + login);
         webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.SECONDS);
         webDriver.findElement(By.linkText("Forgot password?")).click();
@@ -183,4 +185,33 @@ public class LoginTC {
         Assert.assertEquals("https://qa-portal.clickatelllabs.com/#/forgotPasswordEmail", webDriver.getCurrentUrl());
         webDriver.close();
     }
+
+    @AfterMethod
+    public void afterMethod(ITestResult result){
+        ITestNGMethod method = result.getMethod();
+        String methodName = method.getMethodName();
+        String issueId = method.getConstructorOrMethod().getMethod().getAnnotation(Test.class).description();
+        try {
+            if(result.getStatus() == ITestResult.SUCCESS) {
+                testResults.add(new MC2PlatformTest(methodName, issueId, "Pass"));
+            }
+
+            else if(result.getStatus() == ITestResult.FAILURE) {
+                testResults.add(new MC2PlatformTest(methodName, issueId, "Fail"));
+            }
+
+            else if(result.getStatus() == ITestResult.SKIP ){
+                testResults.add(new MC2PlatformTest(methodName, issueId, "Skipped"));
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterTest
+    public void afterTest(){
+        TestResultWriter.write(LoginTC.class.getSimpleName()+".csv", testResults);
+    }
+
 }

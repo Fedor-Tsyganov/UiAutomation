@@ -1,13 +1,20 @@
 package login_signup;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import constants.MC2PlatformTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
 import utils.RandomString;
+import utils.TestResultWriter;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,20 +30,22 @@ public class SignupTC {
     private String [] names = new String[]{"text", "accountName", "email", "password"};
     private String [] placeholderValues = new String[]{"First and Last Name", "Account Name", "Email", "Password"};
     private RandomString randomString;
+    private ArrayList <MC2PlatformTest> testResults = new ArrayList<>();
     private String BLANK = "";
 
-    @Before
-    public void setUp(){
+    @BeforeTest
+    public void setSystem(){
         System.setProperty(chromeDriver, pathToCD);
+    }
+
+    @BeforeMethod
+    public void setDriver(){
         webDriver = new ChromeDriver();
         webDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
-
-    //TC all fields are present with valid placeholders
-    //
-    @Test
-    public void testSignup_0(){
+    @Test(priority = 0, description = "link to TC")
+    public void testSignupAllFieldsArePresent(){
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -53,10 +62,8 @@ public class SignupTC {
         webDriver.close();
     }
 
-    //Happy Pass. TC: user can sign-up with valid credentials
-    //
-    @Test
-    public void testSignup_1() throws InterruptedException {
+    @Test(priority = 1, description = "link to TC")
+    public void testUserCanSignupWithValidCredentials() throws InterruptedException {
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 
@@ -85,10 +92,8 @@ public class SignupTC {
     }
 
 
-    //TC: user cannot sign-up with only first name
-    //
-    @Test
-    public void testSignup_2() throws InterruptedException{
+    @Test(priority = 2, description = "link to TC")
+    public void testUserCannotSignupWithOnlyFirstName() throws InterruptedException{
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -114,8 +119,8 @@ public class SignupTC {
 
     //TC: user cannot sign-up with all blank fields
     //
-    @Test
-    public void testSignup_3(){
+    @Test(priority = 3, description = "link to TC")
+    public void testUserCannotSignupWithAllBlankFields(){
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -148,10 +153,8 @@ public class SignupTC {
         webDriver.close();
     }
 
-    //TC: user cannot sign-up with blank name
-    //
-    @Test
-    public void testSignup_4(){
+    @Test(priority = 4, description = "link to TC")
+    public void testUserCannotSignupWithBlankName(){
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -174,10 +177,8 @@ public class SignupTC {
         webDriver.close();
     }
 
-    //TC: user cannot sign-up with blank account name
-    //
-    @Test
-    public void testSignup_5() {
+    @Test(priority = 5, description = "link to TC")
+    public void testCannotSignupWithBlankAccountName() {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -201,10 +202,8 @@ public class SignupTC {
         webDriver.close();
     }
 
-    //TC: user cannot sign-up with blank email
-    //
-    @Test
-    public void testSignup_6() {
+    @Test(priority = 6, description = "link to TC")
+    public void testCannotSignupWithBlankEmail() {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -228,10 +227,8 @@ public class SignupTC {
         webDriver.close();
     }
 
-    //TC: user cannot sign-up with blank password
-    //
-    @Test
-    public void testSignup_7() {
+    @Test(priority = 7, description = "link to TC")
+    public void testCannotSignupWithBlankPassword() {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -256,10 +253,8 @@ public class SignupTC {
         webDriver.close();
     }
 
-    //TC: user cannot sign-up with short password (min 8 and max 128 characters)
-    //
-    @Test
-    public void testSignup_8() throws InterruptedException {
+    @Test(priority = 8, description = "link to TC")
+    public void testCannotSignupWithShortPassword() throws InterruptedException {
 
         webDriver.get(baseUrl + signup);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
@@ -282,5 +277,33 @@ public class SignupTC {
         Assert.assertEquals("password: size must be between 8 and 128", text);
 
         webDriver.close();
+    }
+
+    @AfterMethod
+    public void afterMethod(ITestResult result){
+        ITestNGMethod method = result.getMethod();
+        String methodName = method.getMethodName();
+        String issueId = method.getConstructorOrMethod().getMethod().getAnnotation(Test.class).description();
+        try {
+            if(result.getStatus() == ITestResult.SUCCESS) {
+                testResults.add(new MC2PlatformTest(methodName, issueId, "Pass"));
+            }
+
+            else if(result.getStatus() == ITestResult.FAILURE) {
+                testResults.add(new MC2PlatformTest(methodName, issueId, "Fail"));
+            }
+
+            else if(result.getStatus() == ITestResult.SKIP ){
+                testResults.add(new MC2PlatformTest(methodName, issueId, "Skipped"));
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @AfterTest
+    public void afterTest(){
+        TestResultWriter.write(LoginTC.class.getSimpleName()+".csv", testResults);
     }
 }
