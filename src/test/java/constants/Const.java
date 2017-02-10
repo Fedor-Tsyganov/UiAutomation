@@ -18,44 +18,38 @@ public class Const {
     public static final String baseEmailNames [] = {"fedor.clickatell", "mc2testportal"};
     public static final String defaultPassword = "12345678";
     public static final String HEADER_JSON = "application/json";
-    public static Set<Cookie> cookies = null;
 
-    public static final String [] accountFirstTime = new String[] {
-            "fedor.clickatell+0023@gmail.com","12345678",
-            "Account", "B"};
+    public static final User firstTimeUser = new User("fedor.clickatell+0023@gmail.com","12345678",
+            "Account", "B");
 
-    public static final String [] accountWithBillingDetails = new String[] {
-            "fedor.clickatell+555@gmail.com","12345678",
-            "Sergio", "Marko"};
-
-    public static final String [] accountWithPhoneNumbers = new String[] {
-            "fedor.clickatell+555@gmail.com","12345678",
-            "Sergio", "Marko"};
-
-    public static final String [] accountWithIntegrations = new String[] {
-            "fedor.clickatell+555@gmail.com","12345678",
-            "Sergio", "Marko"};
+    public static final User userWithDetails = new User("fedor.clickatell+555@gmail.com","12345678",
+            "Sergio", "Marko");
 
     public static final String leftNavNames []
             = new String[]{"Dashboard","SMS integrations","2-Way numbers",
             "Reporting","Developer tools","Help","Collapse nav"};
 
-    public static final String integrationCardText []
+    public static final String integrationCardTextFirstTime[]
             = new String[]{"Create your first SMS integration",
             "Follow our easy step by step wizard to create your first REST API integration " +
                     "and start sending messages from your website, service or application.",
             "SMS integrations",
             "Interested in SMPP"};
 
-    public static final String testPhonesCardText []
+    public static final String testPhonesCardTextFirstTime[]
             = new String[]{"Register your free test phones",
             "You can register up to 3 free test phones on your Clickatell account.",
             "Register test phones"};
 
-    public static final String developerInfoCardText []
+    public static final String developerInfoCardTextFirstTime[]
             = new String[]{"Before getting started",
             "Setting up your first SMS integration is super easy. If you need any help, check out our Developer Tools " +
                     "for API and technical documentation, code snippets, tutorials and more.",
             "Developer tools"};
+
+    public static final String phoneNumbersInfoCardText[]
+            = new String[]{"Phone number",
+            "Manage Long numbers and short codes for two-way messaging.",
+            "2-Way numbers"};
 
 }

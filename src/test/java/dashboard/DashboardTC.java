@@ -1,5 +1,6 @@
 package dashboard;
 
+import constants.User;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,11 +18,13 @@ import static constants.Const.*;
  */
 public class DashboardTC {
 
-    public void login(){
+    private int count = 0;
+
+    public void login(User user){
         if (webDriver != null){
             webDriver.get(baseUrl+"/login");
-            webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(accountFirstTime[0]);
-            webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(accountFirstTime[1]);
+            webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(user.getEmail());
+            webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(user.getPassword());
             webDriver.findElement(By.xpath("//form/div/button")).click();
         }
     }
@@ -35,52 +38,57 @@ public class DashboardTC {
     public void setDriver(){
         webDriver = new ChromeDriver();
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        login();
+        if (count < 1) {
+            login(firstTimeUser);
+            count++;
+        } else {
+            login(userWithDetails);
+        }
     }
 
 
     //ToDo: TC to verify that everything is displayed correctly
-    @Test
+    @Test (priority = 0, description = "link to TC")
     public void testAllUiElementsPresentWhenEnterFirstTime(){
         webDriver.navigate().to(baseUrl);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         WebElement element = webDriver.findElement(By.xpath("/html/body/div/div/ui-view/section/div"));
 
-        Assert.assertEquals("Welcome, "+ accountFirstTime[2], element.getText());
+        Assert.assertEquals("Welcome, "+ firstTimeUser.getFirstName(), element.getText());
 
         //Integration Card
-        Assert.assertEquals(integrationCardText[0],
+        Assert.assertEquals(integrationCardTextFirstTime[0],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(1) > div > h3"))
                         .getText());
-        Assert.assertEquals(integrationCardText[1],
+        Assert.assertEquals(integrationCardTextFirstTime[1],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(1) > div > ng-include > div.dashboard-step-content.ng-scope"))
                         .getText());
-        Assert.assertEquals(integrationCardText[2],
+        Assert.assertEquals(integrationCardTextFirstTime[2],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(1) > div > ng-include > div.btn-group.ng-scope > button.button.button-primary"))
                         .getText());
-        Assert.assertEquals(integrationCardText[3],
+        Assert.assertEquals(integrationCardTextFirstTime[3],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(1) > div > ng-include > div.btn-group.ng-scope > button.button.button-secondary"))
                         .getText());
 
         //Register Test Phone Card
-        Assert.assertEquals(testPhonesCardText[0],
+        Assert.assertEquals(testPhonesCardTextFirstTime[0],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(2) > div > h3"))
                         .getText());
-        Assert.assertEquals(testPhonesCardText[1],
+        Assert.assertEquals(testPhonesCardTextFirstTime[1],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(2) > div > ng-include > div.dashboard-step-content.ng-binding.ng-scope"))
                         .getText());
-        Assert.assertEquals(testPhonesCardText[2],
+        Assert.assertEquals(testPhonesCardTextFirstTime[2],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(2) > div > ng-include > div.btn-group.ng-scope > button"))
                         .getText());
 
         //Getting Started Card
-        Assert.assertEquals(developerInfoCardText[0],
+        Assert.assertEquals(developerInfoCardTextFirstTime[0],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(3) > div > h3"))
                         .getText());
-        Assert.assertEquals(developerInfoCardText[1],
+        Assert.assertEquals(developerInfoCardTextFirstTime[1],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(3) > div > ng-include > div.dashboard-step-content.ng-scope"))
                         .getText());
-        Assert.assertEquals(developerInfoCardText[2],
+        Assert.assertEquals(developerInfoCardTextFirstTime[2],
                 webDriver.findElement(By.cssSelector("#portal-app > div > div > ui-view > div > div:nth-child(3) > div > ng-include > div.btn-group.ng-scope > button"))
                         .getText());
 
@@ -91,12 +99,26 @@ public class DashboardTC {
         webDriver.close();
     }
 
-
-    /*
-    @Test
+    @Test(priority = 1, description = "link to TC")
     public void testAllUiElementsPresentWhenEnterWithTestPhone(){
+        webDriver.navigate().to(baseUrl);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        WebElement element = webDriver.findElement(By.xpath("/html/body/div/div/ui-view/section/div"));
 
+        Assert.assertEquals("Welcome, "+ userWithDetails.getFirstName(), element.getText());
+        Assert.assertEquals("8.08 USD",
+                webDriver.findElement(By.cssSelector("#portal-app > div > header > div > div.balance-block > div > div.balance-total.ng-binding"))
+                        .getText());
+        webDriver.close();
     }
-    */
+
+
+    @Test(priority = 2, description = "link to TC")
+    public void testRegisterPhoneNumber(){
+        webDriver.navigate().to(baseUrl);
+        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+        webDriver.close();
+    }
 
 }
