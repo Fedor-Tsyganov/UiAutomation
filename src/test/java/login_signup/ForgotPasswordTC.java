@@ -118,6 +118,6 @@ public class ForgotPasswordTC {
 
     @AfterTest
     public void afterTest(){
-        TestResultWriter.write(LoginTC.class.getSimpleName()+".csv", testResults);
+        TestResultWriter.write(ForgotPasswordTC.class.getSimpleName()+".csv", testResults);
     }
 }

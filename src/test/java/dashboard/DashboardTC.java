@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import java.util.concurrent.TimeUnit;
 
 import static constants.Const.*;
+import static utils.Operation.login;
 
 /**
  * Created by 2012mba4gb128gb on 2/8/17.
@@ -19,15 +20,6 @@ import static constants.Const.*;
 public class DashboardTC {
 
     private int count = 0;
-
-    public void login(User user){
-        if (webDriver != null){
-            webDriver.get(baseUrl+"/login");
-            webDriver.findElement(By.xpath("//form/div/input[@name='email']")).sendKeys(user.getEmail());
-            webDriver.findElement(By.xpath("//form/div/input[@name='password']")).sendKeys(user.getPassword());
-            webDriver.findElement(By.xpath("//form/div/button")).click();
-        }
-    }
 
     @BeforeTest
     public void setSystem(){

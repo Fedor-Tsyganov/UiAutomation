@@ -304,6 +304,6 @@ public class SignupTC {
 
     @AfterTest
     public void afterTest(){
-        TestResultWriter.write(LoginTC.class.getSimpleName()+".csv", testResults);
+        TestResultWriter.write(SignupTC.class.getSimpleName()+".csv", testResults);
     }
 }
