@@ -2,6 +2,8 @@ package sms_integrations;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
@@ -19,6 +21,7 @@ public class TwoWayIntegration {
 
     private int count = 0;
     private static final String integrations = "/integrations/sms";
+    private WebDriverWait wait;
 
 
     @BeforeTest
@@ -29,6 +32,7 @@ public class TwoWayIntegration {
     @BeforeMethod
     public void setDriver(){
         webDriver = new ChromeDriver();
+        wait = new WebDriverWait(webDriver, 30);
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         if (count < 1) {
             login(firstTimeUser);
@@ -51,16 +55,11 @@ public class TwoWayIntegration {
         //features tab
         findByCss("#portal-app > div.modal.integration-dialog.wizard-dialog.ng-scope.ng-isolate-scope.in > div > div > div > div.cl-wizzard--body > div > div > div.ngsb-container > ng-include > fieldset > fieldset.cl-page-section.mod-reset-pt > div.cl-page-section--descr > div:nth-child(2) > label > span")
                 .click();
-        bNext.click();
-        // => settings tab
-        bNext.click();
-        // => two-way settings tab
-        bNext.click();
-        // => phone numbers tab
-        bNext.click();
-        // => save integration tab
-        bNext.click();
-        Thread.sleep(2000);
+        bNext.click(); // => settings tab
+        bNext.click(); // => two-way settings tab
+        bNext.click(); // => phone numbers tab
+        bNext.click(); // => save integration tab
+
         WebElement bFinish = findByCss("#portal-app > div.modal.integration-dialog.wizard-dialog.ng-scope.ng-isolate-scope.in > div > div > div > div.cl-wizzard--footer.hide-on-small > button:nth-child(3)");
         Assert.assertEquals("Finish", bFinish.getText());
         // => finish
