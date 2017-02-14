@@ -33,4 +33,12 @@ public class Operation {
         return createNewIntegrationButton;
     }
 
+    public static void closeNewIntegrationDialog(){
+        findByCss("#c4cc9515-a905-4639-9864-317b46fd9c30 > rect:nth-child(4)").click();
+    }
+
+    public static WebElement findByCss(String selector){
+        return webDriver.findElement(By.cssSelector(selector));
+    }
+
 }
