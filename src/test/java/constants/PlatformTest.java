@@ -3,7 +3,7 @@ package constants;
 /**
  * Created by 2012mba4gb128gb on 2/9/17.
  */
-public class MC2PlatformTest {
+public class PlatformTest {
 
     private String method;
     private String issueId;
